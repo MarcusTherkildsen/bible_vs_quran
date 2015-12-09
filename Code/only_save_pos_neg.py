@@ -15,18 +15,24 @@ Create positive and negative versions of the Bible and the Quran
 
 if __name__ == '__main__':
 
+    '''
+    Data directory
+    '''
+    data_dir = '../Data/'
 
     '''
     Load positive and negative lists
     '''
+    neg_comp = np.genfromtxt(data_dir + 'negative_words.txt', delimiter='\n', dtype=np.str, autostrip=True)
+    pos_comp = np.genfromtxt(data_dir + 'positive_words.txt', delimiter='\n', dtype=np.str, autostrip=True)
 
-    neg_comp = np.genfromtxt('negative_words.txt', delimiter='\n', dtype=np.str, autostrip=True)
-    pos_comp = np.genfromtxt('positive_words.txt', delimiter='\n', dtype=np.str, autostrip=True)
-
+    '''
+    Positive and negative nouns
+    '''
 
     txts = ['Bible', 'Quran']
     for j in txts:
-        data = np.genfromtxt(j + '_nouns.txt', delimiter='\n', dtype=np.str, autostrip=True)
+        data = np.genfromtxt(data_dir + j + '_nouns.txt', delimiter='\n', dtype=np.str, autostrip=True)
 
         '''
         Sorting
@@ -52,5 +58,5 @@ if __name__ == '__main__':
         print str(len(bible_neg_arr)) + ' negative words in the ' + j
         print str(len(bible_pos_arr)) + ' positive words in the ' + j
 
-        np.savetxt(j + '_neg.txt', bible_neg_arr, delimiter=" ", fmt="%s")
-        np.savetxt(j + '_pos.txt', bible_pos_arr, delimiter=" ", fmt="%s")
+        np.savetxt(data_dir + j + '_neg.txt', bible_neg_arr, delimiter=" ", fmt="%s")
+        np.savetxt(data_dir+ j + '_pos.txt', bible_pos_arr, delimiter=" ", fmt="%s")

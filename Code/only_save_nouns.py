@@ -16,10 +16,20 @@ Remove all non-nouns from the Bible and the Quran
 if __name__ == '__main__':
 
     '''
+    All English nouns
+    '''
+    nouns = [str(x).split('.')[0].split("('")[1] for x in wn.all_synsets('n')]
+
+    '''
+    Data directory
+    '''
+    data_dir = '../Data/'
+
+    '''
     Bible
     '''
 
-    with open('Bible.txt', 'r') as f_open:
+    with open(data_dir + 'Bible.txt', 'r') as f_open:
         data = f_open.readlines()
 
     clean_bible = []
@@ -39,8 +49,6 @@ if __name__ == '__main__':
     Only nouns
     '''
 
-    nouns = [str(x).split('.')[0].split("('")[1] for x in wn.all_synsets('n')]
-
     bible_nouns = []
     tot_words = len(data)
 
@@ -56,13 +64,13 @@ if __name__ == '__main__':
 
     print str(len(bible_nouns_arr)) + ' nouns in the Bible'
 
-    np.savetxt('Bible_nouns.txt', bible_nouns_arr, delimiter=" ", fmt="%s")
+    np.savetxt(data_dir + 'Bible_nouns.txt', bible_nouns_arr, delimiter=" ", fmt="%s")
 
     '''
     Quran
     '''
 
-    with open('Quran.txt', 'r') as f_open:
+    with open(data_dir + 'Quran.txt', 'r') as f_open:
         data = f_open.read()
 
     data = np.array(data.replace(';', '').
@@ -74,8 +82,6 @@ if __name__ == '__main__':
     '''
     Only nouns
     '''
-
-    nouns = [str(x).split('.')[0].split("('")[1] for x in wn.all_synsets('n')]
 
     bible_nouns = []
     tot_words = len(data)
@@ -92,4 +98,4 @@ if __name__ == '__main__':
 
     print str(len(bible_nouns_arr)) + ' nouns in the Quran'
 
-    np.savetxt('Quran_nouns.txt', bible_nouns_arr, delimiter=" ", fmt="%s")
+    np.savetxt(data_dir + 'Quran_nouns.txt', bible_nouns_arr, delimiter=" ", fmt="%s")
