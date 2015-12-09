@@ -24,7 +24,25 @@ plt.rcParams['mathtext.default'] = 'regular'
 font = {'size': 14}
 plt.rc('font', **font)
 
+
+def simpleaxis(ax):
+    color = 'black'
+    for spine in ['top', 'right']:
+        ax.spines[spine].set_visible(False)
+    for spine in ['bottom', 'left']:
+        ax.spines[spine].set_edgecolor(color)
+    ax.tick_params(color=color, labelcolor=color)
+    ax.get_xaxis().tick_bottom()
+    ax.get_yaxis().tick_left()
+    ax.spines['left'].set_zorder(200)
+    ax.spines['bottom'].set_zorder(200)
+
+
 if __name__ == '__main__':
+
+    '''
+    Directories
+    '''
 
     data_dir = '../Data/'
     save_dir = '../Figures/'
@@ -35,6 +53,11 @@ if __name__ == '__main__':
 
     # How many to print
     top = 10
+
+
+    '''
+    Noun only
+    '''
 
     # Load the bible and quran
 
@@ -70,16 +93,18 @@ if __name__ == '__main__':
     PLOT
     '''
 
+    w_all = 0.8
+
     c_all = ['#197319', '#2F2FC0']
 
     for i in xrange(2):
         fig, ax = plt.subplots()
-        ax.grid()
-        ax.barh(np.arange(top)+0.5, top_words_count[i, :], 1, color=c_all[i], zorder = 100)
-        ax.set_ylim(0, top+1)
+        ax.xaxis.grid()
+        ax.barh(np.arange(top)+0.5, top_words_count[i, :], w_all, color=c_all[i], edgecolor=c_all[i], zorder = 100)
+        ax.set_ylim(0, top+w_all)
         ax.set_xlim(np.min(top_words_count[i, :])*0.9,
                     np.max(top_words_count[i, :])*1.1)
-        ax.set_yticks(np.arange(top)+1)
+        ax.set_yticks(np.arange(top)+1-(1-w_all)/2)
         ax.set_yticklabels(top_words_name[i, :])
 
         ax.xaxis.set_ticks_position('none')
@@ -95,6 +120,7 @@ if __name__ == '__main__':
             to_save = txts[i] + '_nouns'
 
         ax.set_title(to_title)
+        simpleaxis(ax)
         plt.tight_layout()
         plt.savefig(save_dir + to_save + '.png', dpi=400)
 
@@ -142,12 +168,12 @@ if __name__ == '__main__':
 
         for i in xrange(2):
             fig, ax = plt.subplots()
-            ax.grid()
-            ax.barh(np.arange(top)+0.5, top_words_count[i, :], 1, color=c_all[i], zorder = 100)
-            ax.set_ylim(0, top+1)
+            ax.xaxis.grid()
+            ax.barh(np.arange(top)+0.5, top_words_count[i, :], w_all, color=c_all[i], edgecolor=c_all[i], zorder = 100)
+            ax.set_ylim(0, top+w_all)
             ax.set_xlim(np.min(top_words_count[i, :])*0.9,
                         np.max(top_words_count[i, :])*1.1)
-            ax.set_yticks(np.arange(top)+1)
+            ax.set_yticks(np.arange(top)+1-(1-w_all)/2)
             ax.set_yticklabels(top_words_name[i, :])
 
             ax.xaxis.set_ticks_position('none')
@@ -163,6 +189,7 @@ if __name__ == '__main__':
                 to_save = txts[i] + plus
 
             ax.set_title(to_title)
+            simpleaxis(ax)
             plt.tight_layout()
             plt.savefig(save_dir + to_save + '.png', dpi=400)
 
@@ -247,12 +274,12 @@ if __name__ == '__main__':
 
     for k in xrange(len(txts)):
         fig, ax = plt.subplots()
-        ax.grid()
-        ax.barh(np.arange(top)+0.5, top_words_count[k, :], 1, color=c_all[k], zorder = 100)
-        ax.set_ylim(0, top+1)
+        ax.xaxis.grid()
+        ax.barh(np.arange(top)+0.5, top_words_count[k, :], w_all, color=c_all[k], edgecolor=c_all[k], zorder = 100)
+        ax.set_ylim(0, top+w_all)
         ax.set_xlim(np.min(top_words_count[k, :])*0.9,
                     np.max(top_words_count[k, :])*1.1)
-        ax.set_yticks(np.arange(top)+1)
+        ax.set_yticks(np.arange(top)+1-(1-w_all)/2)
         ax.set_yticklabels(top_words_name[k, :])
 
         ax.xaxis.set_ticks_position('none')
@@ -261,6 +288,7 @@ if __name__ == '__main__':
 
         ax.set_xlabel('%')
         ax.set_title(txts[k])
+        simpleaxis(ax)
         plt.tight_layout()
         plt.savefig(save_dir + txts[k] + '_bad_words.png', dpi=400)
 
@@ -271,11 +299,11 @@ if __name__ == '__main__':
     '''
     top = 2
     fig, ax = plt.subplots()
-    ax.grid()
-    ax.bar(np.arange(top)+0.5, k_d, 1, color=c_all, zorder=100)
-    ax.set_xlim(0, top+1)
+    ax.yaxis.grid()
+    ax.bar(np.arange(top)+0.5, k_d, w_all, color=c_all, edgecolor=c_all, zorder=100)
+    ax.set_xlim(0, top+w_all)
     ax.set_ylim(0, np.max(k_d)*1.1)
-    ax.set_xticks(np.arange(top)+1)
+    ax.set_xticks(np.arange(top)+1-(1-w_all)/2)
     ax.set_xticklabels(txts)
 
     ax.xaxis.set_ticks_position('none')
@@ -283,6 +311,7 @@ if __name__ == '__main__':
     ax.locator_params(axis='y', nbins=6)
 
     ax.set_title('K/D ratio')
+    simpleaxis(ax)
     plt.tight_layout()
     plt.savefig(save_dir + 'k_d_ratio.png', dpi=400)
     plt.show()
