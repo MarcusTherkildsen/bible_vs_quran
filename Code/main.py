@@ -26,6 +26,9 @@ plt.rc('font', **font)
 
 if __name__ == '__main__':
 
+    data_dir = '../Data/'
+    save_dir = '../Figures/'
+
     '''
     Counting
     '''
@@ -34,6 +37,7 @@ if __name__ == '__main__':
     top = 10
 
     # Load the bible and quran
+
     txts = ['Bible', 'Quran']
     plus = '_nouns'
 
@@ -45,7 +49,7 @@ if __name__ == '__main__':
     for j in txts:
         tj += 1
         frequencies = Counter()
-        with open(j + plus + '.txt') as f:
+        with open(data_dir + j + plus + '.txt') as f:
             for line in f:
                 frequencies.update(line.lower().split())
 
@@ -92,7 +96,7 @@ if __name__ == '__main__':
 
         ax.set_title(to_title)
         plt.tight_layout()
-        plt.savefig(to_save + '.png', dpi=400)
+        plt.savefig(save_dir + to_save + '.png', dpi=400)
 
         plt.show()
 
@@ -115,7 +119,7 @@ if __name__ == '__main__':
         for j in txts:
             tj += 1
             frequencies = Counter()
-            with open(j + plus + '.txt') as f:
+            with open(data_dir + j + plus + '.txt') as f:
                 for line in f:
                     frequencies.update(line.lower().split())
 
@@ -160,7 +164,7 @@ if __name__ == '__main__':
 
             ax.set_title(to_title)
             plt.tight_layout()
-            plt.savefig(to_save + '.png', dpi=400)
+            plt.savefig(save_dir + to_save + '.png', dpi=400)
 
             plt.show()
 
@@ -179,13 +183,13 @@ if __name__ == '__main__':
     # Set aspect ratio to be equal so that pie is drawn as a circle.
     plt.axis('equal')
     plt.title('Pos/neg ratio')
-    plt.savefig('pos_neg_ratio.png', dpi=400)
+    plt.savefig(save_dir + 'pos_neg_ratio.png', dpi=400)
     plt.show()
 
     '''
-    Kill, famine, pain, death(+dead)
+    Kill, killing, famine, pain, death(+dead)
     '''
-    bad_words = np.array(['kill', 'famine', 'pain', 'death', 'dead'])
+    bad_words = np.array(['kill', 'killing', 'famine', 'pain', 'death', 'dead'])
     top = len(bad_words)
     top_words_count = np.zeros([len(txts), top])
     top_words_name = np.chararray([len(txts), top], itemsize=50)
@@ -194,7 +198,7 @@ if __name__ == '__main__':
     for k in xrange(len(txts)):
         bad_words_num = np.zeros(top)
 
-        data = np.genfromtxt(txts[k] + '_neg.txt', delimiter='\n', dtype=np.str, autostrip=True)
+        data = np.genfromtxt(data_dir + txts[k] + '_neg.txt', delimiter='\n', dtype=np.str, autostrip=True)
 
         for i in xrange(len(data)):
             if data[i] in bad_words:
@@ -220,7 +224,20 @@ if __name__ == '__main__':
     k_d = np.zeros(len(txts))
     for k in xrange(len(txts)):
 
-        k_d[k] = rev_top_words_count[k, 2] / (rev_top_words_count[k, 0] + rev_top_words_count[k, 1])
+        #k_d[k] = rev_top_words_count[k, 2] / (rev_top_words_count[k, 0] + rev_top_words_count[k, 1])
+
+        tot_kill = 0
+        tot_dead = 0
+
+        for i in xrange(top):
+            if rev_top_words_name[k, i] == 'kill' or rev_top_words_name[k, i] == 'killing':
+                #print 'kill'
+                tot_kill += rev_top_words_count[k, i]
+            elif rev_top_words_name[k, i] == 'death' or rev_top_words_name[k, i] == 'dead':
+                #print 'dead'
+                tot_dead += rev_top_words_count[k, i]
+
+        k_d[k] = float(tot_kill)/tot_dead
 
 
 
@@ -245,7 +262,7 @@ if __name__ == '__main__':
         ax.set_xlabel('%')
         ax.set_title(txts[k])
         plt.tight_layout()
-        plt.savefig(txts[k] + '_bad_words.png', dpi=400)
+        plt.savefig(save_dir + txts[k] + '_bad_words.png', dpi=400)
 
         plt.show()
 
@@ -267,5 +284,5 @@ if __name__ == '__main__':
 
     ax.set_title('K/D ratio')
     plt.tight_layout()
-    plt.savefig('k_d_ratio.png', dpi=400)
+    plt.savefig(save_dir + 'k_d_ratio.png', dpi=400)
     plt.show()
